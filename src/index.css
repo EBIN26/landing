@@ -1,0 +1,276 @@
+/* Google Fonts Import MUST COME FIRST (or after @charset or empty @layer) */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&display=swap");
+
+/* Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif; /* Default font */
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.23); }
+::-webkit-scrollbar-thumb { background: white; height: 10%; }
+
+/* Overlay, Loader, Intro, Logo, Spinner */
+.overlay { position: absolute; top: 0; left: 0; bottom: 0; right: 0; }
+.overlay--disable { pointer-events: none; }
+.loader { position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: white; transition: opacity 2s ease-in-out; z-index: 10000; }
+.loader--disappear { opacity: 0; pointer-events: none; }
+
+.intro {
+  display: flex; /* Using flex to see if it helps arrange children */
+  flex-direction: column;
+  justify-content: center; /* Center items if they are smaller than the container */
+  align-items: center;
+  height: 100%;
+  position: relative;
+  border: 3px dotted lime; /* VISIBLE BORDER FOR INTRO SECTION */
+  box-sizing: border-box;
+}
+
+/* --- MODIFIED DEBUGGING STYLES for .logo --- */
+/* --- MODIFIED DEBUGGING STYLES for .logo --- (Now becoming production styles) --- */
+.logo {
+  font-family: "Poppins", sans-serif;
+  color: white;
+  font-size: 6rem; /* Initial large size */
+  font-weight: bold;
+  text-align: center;
+  position: absolute;
+  top: 45%; /* Initial centered Y position */
+  left: 51%;
+  /* Initial transform for centering and full scale */
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 9900;
+  width: auto; /* Or specific width if needed */
+  display: inline-block; /* Or block */
+
+  /* Initial Fade-in Animation (from previous step) */
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 1.5s; /* Duration for initial logo fade-in */
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  /* animation-delay: 0.5s; */ /* Optional initial delay */
+
+  /* --- Add Transitions for smooth change when .intro--disappear is added --- */
+  /* Duration for resizing/moving animation */
+  transition: top 0.8s ease-in-out,
+              font-size 0.8s ease-in-out,
+              transform 0.8s ease-in-out,
+              opacity 0.8s ease-in-out; /* Added opacity transition if needed */
+}
+
+/* --- MODIFIED DEBUGGING STYLES for .intro__scroll --- */
+.intro__scroll {
+  font-family: "Inter", sans-serif !important;
+  color: orange !important;
+  background-color: navy !important;
+  font-size: 1.2rem !important; /* Readable fixed size */
+  border: 2px solid hotpink !important;
+  padding: 10px !important;
+  text-align: center;
+
+  position: absolute !important; /* Keep absolute for now, but with fixed pos */
+  top: 40% !important;            /* Fixed position below logo */
+  left: 50% !important;
+  transform: translateX(-50%) !important; /* Center horizontally */
+
+  opacity: 1 !important;
+  animation: none !important;
+  transition: none !important;
+  z-index: 9900 !important; /* High z-index */
+  width: auto; /* Let content define width */
+  /* display: inline-block; Or block */
+  display: none !important; /* ADD THIS LINE TO HIDE IT */
+}
+
+/* Styles for when intro disappears (keep these to see if 'play' state has an effect) */
+.intro--disappear .logo {
+  top: 5px; /* Target top position */
+  font-size: 6rem; /* Target smaller font-size - ADJUST AS NEEDED */
+  /* Target transform: centered horizontally, scaled down.
+     The translateX(-50%) keeps it centered after scaling.
+     The top: 42px handles the Y positioning.
+  */
+  transform: translateX(-50%) scale(0.5);
+  opacity: 1; /* Or 0 if it should fade out completely.
+                 If it should remain visible but smaller, keep opacity: 1.
+                 Remove !important to allow transition if base had opacity 0 for initial fadeIn.
+                 If the fadeIn animation already sets opacity to 1 via 'forwards',
+                 this opacity: 1 here is for the target state of the transition. */
+  /* Ensure no conflicting animations are running on these properties here if not intended */
+  animation-name: none; /* Stop the initial fadeIn if it was still somehow trying to run/restart */
+}
+.intro--disappear .intro__scroll {
+    opacity: 0 !important; /* Original fade out on play */
+    animation: fadeOut 1s ease-in-out forwards;
+}
+
+
+/* Spinner - Ensure path to image is correct */
+.spinner { position: absolute; right: 0px; top: 0px; margin-right: -42px; margin-top: -42px; animation: fadeIn 2.4s ease-in-out 1.2s forwards; opacity: 0; }
+.spinner__image { width: 164px; height: 164px; background-size: contain; background-repeat: no-repeat; background-image: url("/images/marinadigi.svg"); animation: rotate 10s linear infinite; }
+.intro--disappear .spinner { animation: fadeOut 1s ease-in-out forwards; }
+
+
+/* Explore Button - this one IS visible, so keep its original styles */
+.explore {
+  /* ... (styles from previous step, including its own fadeIn animation and delay) ... */
+  padding: 1rem 2rem;
+  border: none;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.1rem;
+  color: #3535cc;
+  background-color: white;
+  border-radius: 32px;
+  cursor: pointer;
+  position: absolute;
+  top: 55%; /* Or your adjusted position */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9900;
+  overflow: hidden;
+  /* transition: color 0.42s ease-in-out; This is for hover, can be kept */
+
+  /* --- Animation for initial appearance --- */
+  opacity: 0; /* Start hidden */
+  animation-name: fadeIn;
+  animation-duration: 1s;  /* Duration for button fade-in */
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  animation-delay: 1.5s; /* Delay until after logo initially fades in */
+}
+.explore:before { content: ""; background: #3535cc; position: absolute; width: 0%; height: 0%; bottom: 0; left: 50%; transition: width 0.42s ease-in-out, height 0.42s ease-in-out; z-index: -1; transform: translateX(-50%) translateY(50%); border-radius: 100%; }
+.explore:hover { color: white; }
+.explore:hover:before { width: 220%; height: 350%; }
+
+.intro--disappear .explore {
+  animation: fadeOut 1s ease-in-out forwards;
+  opacity: 0 !important; /* Original fade out on play */
+}
+
+/* Outro Section */
+.outro { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 4s ease-in-out; pointer-events: none; }
+.outro--appear { opacity: 1; pointer-events: auto; }
+.outro__text { font-family: "Inter", sans-serif; font-size: 1.5rem; color: white; text-align: center; margin-bottom: 30px; }
+.outro__button {
+  padding: 1rem 2rem;
+  border: none;
+  font-family: "DM Serif Display", serif;
+  font-size: 1.25rem;
+  left:5px;
+  letter-spacing: 0.2rem;
+  color: #3535cc;
+  background-color: white;
+  border-radius: 32px;
+  cursor: pointer;
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+  /* Initial state for animation: */
+  opacity: 0;
+  transform: translateY(20px);
+  /* Animation properties: */
+  animation: fadeIn 0.8s ease-in-out 0.5s forwards !important;
+  transition: color 0.42s ease-in-out; /* For hover effect */
+}
+
+.outro__button:before {
+  content: "";
+  background: #3535cc;
+  position: absolute;
+  width: 0%;
+  height: 0%;
+  bottom: 0;
+  left: 50%;
+  transition: width 0.42s ease-in-out, height 0.42s ease-in-out;
+  z-index: -1;
+  transform: translateX(-50%) translateY(50%);
+  border-radius: 100%;
+}
+
+.outro__button:hover {
+  color: white;
+}
+
+.outro__button:hover:before {
+  width: 220%;
+  height: 350%;
+}
+
+@keyframes fadeInRise { /* This is the animation being used */
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Keyframe Animations (These won't apply to .logo and .intro__scroll with current debug styles) */
+@keyframes fadeUp { 0% { opacity: 0; transform: translate(-50%, calc(-50% + 100px)); filter: blur(9px); } 100% { opacity: 1; transform: translate(-50%, -50%); filter: none; } }
+@keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes rotate { 100% { transform: rotate(360deg); } }
+@keyframes fadeInRise { to { opacity: 1; transform: translateY(0); } }
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .logo { font-size: 2rem !important; top: 10% !important; } /* Adjust debug for mobile */
+  .intro--disappear .logo { top: 24px !important; transform: translateX(-50%) scale(0.5) !important; }
+  .spinner__image { width: 82px; height: 82px; }
+  .intro__scroll { font-size: 1rem !important; top: 30% !important; max-width: 90%; } /* Adjust debug for mobile */
+  .explore { top: 55% !important; font-size: 1rem; padding: 0.8rem 1.5rem; } /* Adjust debug for mobile */
+  .outro__text { font-size: 1.1rem; }
+  .outro__button { font-size: 1rem; padding: 0.8rem 1.5rem; }
+}
+
+.outline-text { -webkit-text-stroke: 1px white; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* New scroll journey text styles */
+.scroll-journey-text {
+  font-family: "Inter", sans-serif;
+  color: white;
+  font-size: 0.85rem;
+  text-align: center;
+  position: absolute;
+  left: 50.5%;
+  transform: translateX(-50%);
+  top: 125px;
+  z-index: 9800;
+  opacity: 0;
+  animation-name: fadeIn;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.8s;
+}
+
+@media screen and (max-width: 768px) {
+  .scroll-journey-text {
+    font-size: 0.9rem;
+    top: calc(24px + 2rem + 15px);
+  }
+}
